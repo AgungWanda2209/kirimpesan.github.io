@@ -1,105 +1,45 @@
+<!DOCTYPE html>
 <html>
-  <head>
-  <link href='https://agungwandauas.netlify.app/css/bootstrap.min.css' rel='stylesheet'/>  
-    </head>
-  <body>
-   <section id="contact" class="contact">
-      <div class="container" data-aos="fade-up">
-
-          <div class="col-lg-8">
-
-              <div class="row">
-                <div class="col-md-6 form-group">
-                  <input name="name" type="text" class="form-control" id="name" placeholder="Nama Kamu" required />
-                </div>
-                <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Email" required />
-                </div>
-              </div>
-              <div class="form-group mt-3">
-                
-              </div>
-              <div class="form-group mt-3">
-                <textarea class="form-control" name="message" rows="7" id="isi" placeholder="Request skin di sini..." required></textarea>
-              </div>
-              <div class="text-center"><button type="submit" class="btn btn-primary" onclick="kirim();">Kirim Request</button></div>
- 
-          </div><!-- End Contact Form -->
-
-        </div>
-    </section><!-- End Contact Section -->
-   <center><h3 id='sukses'></h3></center>
-    
-    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase.js"></script>
-
-<script>
-
-  // Configurasi Firebase
-
-  var firebaseConfig = {
-apiKey : "AIzaSyBGTT0Y7wlg-pZZR7pkXoAKvkWCzo5J6s8" , 
-  authDomain : "req-script.firebaseapp.com" , 
-  databaseURL : "https://indo-viral-new-default-rtdb.firebaseio.com" , 
-  projectId : "req-script" , 
-  storageBucket : "req-script.appspot.com" , 
-  messagingSenderId : "414356595740" , 
-  appId : "1:414356595740:web:4906acda9839721f9aabd9" 
-  
-  };
-
-  // Menginisialisasikan Firebase
-
-  firebase.initializeApp(firebaseConfig);
-
-  firebase.analytics();
-
-</script>                   
-
-
-
-  <!-- JS Files -->
-
-  <script src="javaS/bootstrap.bundle.min.js"></script>
-
-
-
-  <!-- Main JS File -->
-
+<head>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+</head>
+<body>
   <script>
-    function kirim(){
-  //Kirim Postingan 
-  var name=document.getElementById('name').value;
-  var email=document.getElementById('email').value;
+    // Inisialisasi konfigurasi Firebase
+    const firebaseConfig = {
+  apiKey: "AIzaSyAmfWcbMSP57122za2-_e9L5AQ6xHAH7dI",
+  authDomain: "dinamyc-link-99670.firebaseapp.com",
+  databaseURL: "https://dinamyc-link-99670-default-rtdb.firebaseio.com",
+  projectId: "dinamyc-link-99670",
+  storageBucket: "dinamyc-link-99670.appspot.com",
+  messagingSenderId: "630375062617",
+  appId: "1:630375062617:web:d6d16a89aed0b114b86548",
+  measurementId: "G-W8V7H5CNKD"
+    };
 
-  var isi=document.getElementById('isi').value;
-  firebase.database().ref('Pesan/').push().set({
-    nama:name,
-    imel:email,
-    isiPesan:isi,
-},function(error){
-  if(error){
-      alert("Request tidak terkirim...");
-  }else{
-    document.getElementById('sukses').innerHTML="Request Terkirim";
+    firebase.initializeApp(firebaseConfig);
 
-      alert("Request berhasill saya akan menghubungi anda jika skin sudah saya tambahkan...");
-      document.getElementById('contact').reset();
-      getdata();
-  }
-});
+    function getLongLink() {
+      const keyFirebase = window.location.pathname.substr(window.location.pathname.lastIndexOf("/") + 1);
 
-}
-    
-</script>
+      const database = firebase.database();
+      const linksRef = database.ref("shortlinks");
+      linksRef.child(keyFirebase).get()
+        .then((snapshot) => {
+          const longLink = snapshot.val();
+          if (longLink) {
+            window.location.href = longLink;
+          } else {
+            alert("Short link tidak valid");
+          }
+        })
+        .catch((error) => {
+          console.error("Error saat mendapatkan long link:", error);
+        });
+    }
 
-  <script src="https://agungwandauas.netlify.app/javaS/bootstrap.js"></script>
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-  
-    </body>
-  </html>
+    getLongLink();
+  </script>
+</body>
+</html>
